@@ -1,0 +1,1 @@
+export const keySecret = "AVqfuAuSQ4Nh3P8qDjhXVb3j6QtAm5"
