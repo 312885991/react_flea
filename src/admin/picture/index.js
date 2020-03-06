@@ -1,14 +1,16 @@
 import React from 'react';
-import { Upload, Icon, Card, Modal, Button, Spin, message } from 'antd';
+import { Upload, Icon, Card, Modal, Button, Spin, message, Form, Input } from 'antd';
 import axios from '../../axios'
 import { keySecret } from '../../config/OSSConfig'
 import './index.less'
+const FormItem = Form.Item;
 
 export default class Picture extends React.Component {
 
   state = {
     spinning: false,
-    isVisible: false,
+    isShowPreview: false,
+    isShowEnterPwd:false,
     imageUrl: []
   };
 
@@ -39,23 +41,46 @@ export default class Picture extends React.Component {
   // 预览图片
   handlePreview = (url) => {
     this.setState({
-      isVisible: true,
+      isShowPreview: true,
       url
     })
   }
 
   // 删除图片前进行确认提示
-  handleDelete = (url) => {
+  handleConfirmDelete = (url) => {
     Modal.confirm({
       title: '提示',
       content: '确认要删除么？',
       okText: '确认删除',
       cancelText: '返回',
       onOk: () => {
-        this.deleteImage(url)
+        this.setState({
+          isShowEnterPwd:true,
+          url
+        })
       }
     })
+  }
 
+  handleDelete = () => {
+    this.enterPwdForm.props.form.validateFields((error, values)=>{
+      if(!error){
+        if(values.password !== '1314520lls0204.'){
+            message.error("操作密码有误")
+            return;
+        }
+        const url = this.state.url;
+        if(!url){
+          message.error("系统出错啦")
+          return;
+        }
+        this.deleteImage(url);
+        this.enterPwdForm.props.form.resetFields();
+        this.setState({
+          isShowEnterPwd:false
+        })
+      }
+    })
   }
 
   // 删除图片
@@ -98,12 +123,12 @@ export default class Picture extends React.Component {
   }
 
   render() {
-    const { imageUrl, spinning, isVisible, url } = this.state;
+    const { imageUrl, spinning, isShowPreview, isShowEnterPwd, url } = this.state;
     const imgList = imageUrl.map((item) => {
       return <div className="imageWrapper">
         <img src={item} />
         <div className="preview" title="预览图片" onClick={() => this.handlePreview(item)}><Icon type="eye" /></div>
-        <div className="delete" title="删除图片" onClick={() => this.handleDelete(item)}><Icon type="delete" /></div>
+        <div className="delete" title="删除图片" onClick={() => this.handleConfirmDelete(item)}><Icon type="delete" /></div>
       </div>
     })
     return (
@@ -127,18 +152,60 @@ export default class Picture extends React.Component {
         <Modal
           title="图片预览"
           footer={null}
-          visible={isVisible}
+          visible={isShowPreview}
           width={700}
           height={500}
           onCancel={() => {
             this.setState({
-              isVisible: false
+              isShowPreview: false
             })
           }}
         >
           {<img src={url} style={{ width: '100%' }} />}
         </Modal>
+        <Modal
+          title="操作确认"
+          visible={isShowEnterPwd}
+          width={450}
+          onOk={this.handleDelete}
+          onCancel={()=>{
+            this.enterPwdForm.props.form.resetFields();
+            this.setState({
+              isShowEnterPwd:false
+            })
+          }}
+        >
+          <EnterPwdForm wrappedComponentRef={(inst) => this.enterPwdForm = inst}/>
+        </Modal>
       </div>
     );
   }
 }
+
+class EnterPwdForm extends React.Component{
+  render(){
+    const { getFieldDecorator } = this.props.form;
+    return(
+      <div>
+        <Form layout="vertical">
+            <FormItem label="密码">
+                {
+                  getFieldDecorator('password',{
+                    rules:[
+                      {
+                        required:true,
+                        message:'密码不能为空'
+                      }
+                    ]
+                  })(
+                    <Input type="password" prefix={<Icon type="lock"/>} />
+                  )
+                }
+            </FormItem>
+        </Form>
+      </div>
+    )
+  }
+}
+
+EnterPwdForm = Form.create()(EnterPwdForm)

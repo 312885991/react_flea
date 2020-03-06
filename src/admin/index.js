@@ -66,8 +66,8 @@ class Admin extends React.Component{
             <div className="admin-container">
                 <Layout>
                     <Sider
-                        breakpoint="md"
-                        collapsedWidth="0" 
+                        // breakpoint="md"
+                        // collapsedWidth="0" 
                         width={215} 
                         className="nav-left"
                     >

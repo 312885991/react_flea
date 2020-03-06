@@ -33,7 +33,7 @@ class Header extends React.Component {
         return (
             <div className="header">
                 <Icon type="bell" />
-                <Dropdown overlay={menu}>
+                <Dropdown overlay={menu} trigger={['click', 'hover']}>
                     <a onClick={e=> e.preventDefault()}>
                         {this.props.userInfo.name||'别回头丶'} <Icon type="down" />
                     </a>
