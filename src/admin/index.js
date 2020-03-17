@@ -14,7 +14,6 @@ class Admin extends React.Component{
     constructor(props){
         super(props)
         const userInfo = this.props.userInfo;
-        // console.log(userInfo)
         if(JSON.stringify(userInfo) === '{}'){
             window.location.href = '/user/login'
         }

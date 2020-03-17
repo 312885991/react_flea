@@ -1,11 +1,11 @@
 import axios from 'axios'
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css'
-import { message } from 'antd';
 
 //创建axios实例
 const service = axios.create({
   baseURL: "https://quicklyweb.cn",
+  // baseURL: "https://localhost",
   timeout: 150000, // 请求超时时间
   withCredentials: true // 选项表明了是否是跨域请求
 })
