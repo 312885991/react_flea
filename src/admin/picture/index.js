@@ -138,7 +138,7 @@ export default class Picture extends React.Component {
             <Upload
               name="file"
               method="POST"
-              action="https://quicklyweb.cn/api/uploadOSSImage"
+              action="https://quicklyweb.cn/uploadOSSImage"
               onChange={this.handleChange}
               beforeUpload={this.handleBeforeUpload}
             >
