@@ -4,8 +4,8 @@ import 'nprogress/nprogress.css'
 
 //创建axios实例
 const service = axios.create({
-  baseURL: "https://quicklyweb.cn",
-  // baseURL: "https://localhost",
+  baseURL: "https://quicklyweb.cn/api",
+  // baseURL: "https://localhost/api",
   timeout: 150000, // 请求超时时间
   withCredentials: true // 选项表明了是否是跨域请求
 })
