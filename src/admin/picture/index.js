@@ -105,11 +105,11 @@ export default class Picture extends React.Component {
     if (!isJpgOrPng) {
       message.error('只能上传JPG或者PNG格式图片');
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error('图片大小不能超过2M');
+    const isLt5M = file.size / 1024 / 1024 < 5;
+    if (!isLt5M) {
+      message.error('图片大小不能超过5M');
     }
-    return isJpgOrPng && isLt2M;
+    return isJpgOrPng && isLt5M;
   }
 
   // 文件上传状态
@@ -138,7 +138,7 @@ export default class Picture extends React.Component {
             <Upload
               name="file"
               method="POST"
-              action="https://quicklyweb.cn/uploadOSSImage"
+              action="https://quicklyweb.cn/api/uploadOSSImage"
               onChange={this.handleChange}
               beforeUpload={this.handleBeforeUpload}
             >
